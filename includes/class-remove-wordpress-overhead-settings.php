@@ -38,7 +38,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 */
 	public $settings = array();
 
-	public function __construct ( $parent ) {
+	function __construct ( $parent ) {
 		$this->parent = $parent;
 
 		$this->base = $this->parent->_base;
@@ -60,7 +60,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 * Initialise settings
 	 * @return void
 	 */
-	public function init_settings () {
+	function init_settings () {
 		$this->settings = $this->settings_fields();
 	}
 
@@ -68,7 +68,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 * Add settings page to admin menu
 	 * @return void
 	 */
-	public function add_menu_item () {
+	function add_menu_item () {
 		$page = add_options_page( __( 'Remove WP Overhead', 'remove-wordpress-overhead' ) , __( 'Remove WP Overhead', 'remove-wordpress-overhead' ) , 'manage_options' , $this->parent->_token . '_settings' ,  array( $this, 'settings_page' ) );
 		add_action( 'admin_print_styles-' . $page, array( $this, 'settings_assets' ) );
 	}
@@ -77,7 +77,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 * Load settings JS & CSS
 	 * @return void
 	 */
-	public function settings_assets () {
+	function settings_assets () {
 
 		// We're including the farbtastic script & styles here because they're needed for the colour picker
 		// If you're not including a colour picker field then you can leave these calls out as well as the farbtastic dependency for the wpt-admin-js script below
@@ -97,7 +97,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 * @param  array $links Existing links
 	 * @return array 		Modified links
 	 */
-	public function add_settings_link ( $links ) {
+	function add_settings_link ( $links ) {
 		$settings_link = '<a href="options-general.php?page=' . $this->parent->_token . '_settings">' . __( 'Settings', 'remove-wordpress-overhead' ) . '</a>';
   		array_push( $links, $settings_link );
   		return $links;
@@ -191,6 +191,13 @@ class Remove_Wordpress_Overhead_Settings {
 					'default'		=> ''
 				),
 				array(
+					'id' 			=> 'remove_jquery_migrate',
+					'label'			=> __( 'Dequeue jQuery Migrate <a href="https://en.wikipedia.org/wiki/Really_Simple_Discovery" target="_blank"><i class="dashicons dashicons-editor-help"></i></a>', 'remove-wordpress-overhead' ),
+					'description'	=> __( '&lt;link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.site.com/xmlrpc.php?rsd" /&gt;', 'remove-wordpress-overhead' ),
+					'type'			=> 'checkbox',
+					'default'		=> ''
+				),
+				array(
 					'id' 			=> 'disable_wp_widgets',
 					'label'			=> __( 'WP Widgets<br><small>Check which widgets you want to disable</small>', 'remove-wordpress-overhead' ),
 					'description'	=> __( 'Check which widgets you want to disable', 'remove-wordpress-overhead' ),
@@ -209,7 +216,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 * Register plugin settings
 	 * @return void
 	 */
-	public function register_settings () {
+	function register_settings () {
 		if ( is_array( $this->settings ) ) {
 
 			// Check posted/selected tab
@@ -250,7 +257,7 @@ class Remove_Wordpress_Overhead_Settings {
 		}
 	}
 
-	public function settings_section ( $section ) {
+	function settings_section ( $section ) {
 		$html = '<p> ' . $this->settings[ $section['id'] ]['description'] . '</p>' . "\n";
 		$html .= '<div class="remove-wordpress-overhead_slide_selectall"><input type="checkbox" id="' . $this->parent->_token . '_selectall"></input><label for="' . $this->parent->_token . '_selectall"></label> Select all</div>';
 		echo $html;
@@ -260,7 +267,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 * Load settings page content
 	 * @return void
 	 */
-	public function settings_page () {
+	function settings_page () {
 
 		// Build page HTML
 		$html = '<div class="wrap" id="' . $this->parent->_token . '_settings">' . "\n";
@@ -346,7 +353,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __clone () {
+	function __clone () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), $this->parent->_version );
 	} // End __clone()
 
@@ -355,7 +362,7 @@ class Remove_Wordpress_Overhead_Settings {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __wakeup () {
+	function __wakeup () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), $this->parent->_version );
 	} // End __wakeup()
 

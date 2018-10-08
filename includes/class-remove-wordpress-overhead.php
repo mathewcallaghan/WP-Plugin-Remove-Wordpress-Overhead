@@ -92,7 +92,7 @@ class Remove_Wordpress_Overhead {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function __construct ( $file = '', $version = '1.0.0', $base = 'wp_plugin_' ) {
+	function __construct ( $file = '', $version = '1.0.0', $base = 'wp_plugin_' ) {
 		$this->_version = $version;
 		$this->_base = $base;
 		$this->_token = 'remove_wordpress_overhead';
@@ -136,7 +136,7 @@ class Remove_Wordpress_Overhead {
 	 * @param  string $description Description of post type
 	 * @return object              Post type class object
 	 */
-	public function register_post_type ( $post_type = '', $plural = '', $single = '', $description = '', $options = array() ) {
+	function register_post_type ( $post_type = '', $plural = '', $single = '', $description = '', $options = array() ) {
 
 		if ( ! $post_type || ! $plural || ! $single ) return;
 
@@ -153,7 +153,7 @@ class Remove_Wordpress_Overhead {
 	 * @param  array  $post_types Post types to which this taxonomy applies
 	 * @return object             Taxonomy class object
 	 */
-	public function register_taxonomy ( $taxonomy = '', $plural = '', $single = '', $post_types = array(), $taxonomy_args = array() ) {
+	function register_taxonomy ( $taxonomy = '', $plural = '', $single = '', $post_types = array(), $taxonomy_args = array() ) {
 
 		if ( ! $taxonomy || ! $plural || ! $single ) return;
 
@@ -168,7 +168,7 @@ class Remove_Wordpress_Overhead {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function admin_enqueue_styles ( $hook = '' ) {
+	function admin_enqueue_styles ( $hook = '' ) {
 		wp_register_style( $this->_token . '-admin', esc_url( $this->assets_url ) . 'css/admin' . $this->script_suffix . '.css', array(), $this->_version );
 		wp_enqueue_style( $this->_token . '-admin' );
 	} // End admin_enqueue_styles ()
@@ -179,7 +179,7 @@ class Remove_Wordpress_Overhead {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function admin_enqueue_scripts ( $hook = '' ) {
+	function admin_enqueue_scripts ( $hook = '' ) {
 		wp_register_script( $this->_token . '-admin', esc_url( $this->assets_url ) . 'js/admin' . $this->script_suffix . '.js', array( 'jquery' ), $this->_version );
 		wp_enqueue_script( $this->_token . '-admin' );
 	} // End admin_enqueue_scripts ()
@@ -190,7 +190,7 @@ class Remove_Wordpress_Overhead {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function load_localisation () {
+	function load_localisation () {
 		load_plugin_textdomain( 'remove-wordpress-overhead', false, dirname( plugin_basename( $this->file ) ) . '/lang/' );
 	} // End load_localisation ()
 
@@ -200,7 +200,7 @@ class Remove_Wordpress_Overhead {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function load_plugin_textdomain () {
+	function load_plugin_textdomain () {
 	    $domain = 'remove-wordpress-overhead';
 
 	    $locale = apply_filters( 'plugin_locale', get_locale(), $domain );
@@ -231,7 +231,7 @@ class Remove_Wordpress_Overhead {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __clone () {
+	function __clone () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), $this->_version );
 	} // End __clone ()
 
@@ -240,7 +240,7 @@ class Remove_Wordpress_Overhead {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __wakeup () {
+	function __wakeup () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), $this->_version );
 	} // End __wakeup ()
 
@@ -250,7 +250,7 @@ class Remove_Wordpress_Overhead {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function install () {
+	function install () {
 		$this->_log_version_number();
 	} // End install ()
 
@@ -285,6 +285,7 @@ class Remove_Wordpress_Overhead {
 			$options['json_api'] = get_option( $this->_base . 'disable_json_api' );
 			$options['canonical'] = get_option( $this->_base . 'remove_canonical' );
 			$options['woo_generator'] = get_option( $this->_base . 'remove_woo_generator' );
+			$options['jquery_migrate'] = get_option( $this->_base . 'remove_jquery_migrate' );
 			$options['widgets'] = get_option( $this->_base . 'disable_wp_widgets' );
 			set_transient( $this->_base . 'transient_settings', $options );
 		}
@@ -349,6 +350,11 @@ class Remove_Wordpress_Overhead {
 			remove_action( 'wp_head','wc_generator_tag' );
 		}
 
+		// Dequeue jQuery migrate
+    if ( isset( $options['jquery_migrate'] ) && 'on' == $options['jquery_migrate'] ) {
+      add_action( 'wp_default_scripts', array( $this, 'dequeue_jquery_migrate' ), 9999 );
+    }
+
 		// disable wp widgets
 		if ( isset( $options['widgets'] ) && '' != $options['widgets'] && is_array( $options['widgets'] ) ) {
 			// unregister widgets
@@ -362,7 +368,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.0.0
 	 * @return    void
 	 */
-	public function remove_json_api () {
+	function remove_json_api () {
 		remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
 		remove_action( 'wp_head', 'wp_oembed_add_discovery_links', 10 );
 		remove_action( 'rest_api_init', 'wp_oembed_register_route' );
@@ -379,7 +385,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.0.0
 	 * @return    void
 	 */
-	public function disable_json_api () {
+	function disable_json_api () {
 		add_filter('json_enabled', '__return_false');
 		add_filter('json_jsonp_enabled', '__return_false');
 		add_filter('rest_enabled', '__return_false');
@@ -392,7 +398,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.0.0
 	 * @return    void
 	 */
-	public function unregister_default_widgets() {
+	function unregister_default_widgets() {
 		$options['widgets'] = get_option( $this->_base . 'disable_wp_widgets' );
 		foreach( $options['widgets'] as $widget ) {
 			unregister_widget( $widget );
@@ -405,7 +411,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.0.0
 	 * @return    void
 	 */
-	public function deleteTransients() {
+	function deleteTransients() {
 		if( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
 			delete_transient( $this->_base . 'transient_settings' );
 		}
@@ -417,7 +423,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.1.0
 	 * @return    void
 	 */
-	public function wp_remove_version() {
+	function wp_remove_version() {
 		return '';
 	}
 
@@ -427,7 +433,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.1.0
 	 * @return    void
 	 */
-	public function remove_ver_css_js( $src ) {
+	function remove_ver_css_js( $src ) {
 		if ( strpos( $src, 'ver=' ) ) {
 			$src = remove_query_arg( 'ver', $src );
 		}
@@ -440,7 +446,7 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.1.0
 	 * @return    void
 	 */
-	public function disable_wp_emojicons() {
+	function disable_wp_emojicons() {
 		remove_action( 'admin_print_styles', 'print_emoji_styles' );
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
@@ -457,12 +463,20 @@ class Remove_Wordpress_Overhead {
 	 * @since     1.1.0
 	 * @return    void
 	 */
-	public function disable_emojicons_tinymce( $plugins ) {
+	function disable_emojicons_tinymce( $plugins ) {
 		if ( is_array( $plugins ) ) {
 			return array_diff( $plugins, array( 'wpemoji' ) );
 		} else {
 			return array();
 		}
 	}
+  
+ /** Dequeue jQuery migrate **/
+function dequeue_jquery_migrate( $scripts ) {
+	if ( ! is_admin() && ! empty( $scripts->registered['jquery'] ) ) {
+		$jquery_dependencies = $scripts->registered['jquery']->deps;
+		$scripts->registered['jquery']->deps = array_diff( $jquery_dependencies, array( 'jquery-migrate' ) );
+	}
+}
 
 }
