@@ -26,6 +26,7 @@ Header items you can remove:
 * Disable JSON API
 * Disable Canonical URL
 * Remove WooCommerce Generator Meta
+* Dequeue jQuery Migrate
 
 You can disable the following widgets:
 * Archives
