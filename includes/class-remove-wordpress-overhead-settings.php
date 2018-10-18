@@ -191,12 +191,19 @@ class Remove_Wordpress_Overhead_Settings {
 					'default'		=> ''
 				),
 				array(
-					'id' 			=> 'remove_jquery_migrate',
-					'label'			=> __( 'Dequeue jQuery Migrate <a href="https://en.wikipedia.org/wiki/Really_Simple_Discovery" target="_blank"><i class="dashicons dashicons-editor-help"></i></a>', 'remove-wordpress-overhead' ),
-					'description'	=> __( '&lt;link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.site.com/xmlrpc.php?rsd" /&gt;', 'remove-wordpress-overhead' ),
+					'id' 			=> 'id_jquery_migrate',
+					'label'			=> __( 'Dequeue jQuery Migrate <a href="https://github.com/jquery/jquery-migrate#jquery-migrate" target="_blank" rel="noopener"><i class="dashicons dashicons-editor-help"></i></a>', 'remove-wordpress-overhead' ),
+					'description'	=> __( 'Remove the jQuery Migrate script (jquery-migrate.js or jquery-migrate.min.js) from the front-end.', 'remove-wordpress-overhead' ),
 					'type'			=> 'checkbox',
 					'default'		=> ''
 				),
+        array(
+          'id' 			=> 'id_disable_xmlrpc',
+          'label'			=> __( 'Disable XML-RPC Methods <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/" target="_blank" rel="noopener"><i class="dashicons dashicons-editor-help"></i></a>', 'remove-wordpress-overhead' ),
+          'description'	=> __( 'Disable XML-RPC methods requiring authentication.', 'remove-wordpress-overhead' ),
+          'type'			=> 'checkbox',
+          'default'		=> ''
+        ),
 				array(
 					'id' 			=> 'disable_wp_widgets',
 					'label'			=> __( 'WP Widgets<br><small>Check which widgets you want to disable</small>', 'remove-wordpress-overhead' ),

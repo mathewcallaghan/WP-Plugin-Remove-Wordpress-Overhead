@@ -275,6 +275,7 @@ class Remove_Wordpress_Overhead {
 		// get transient with options or set it of not available
 		if ( false === $options = get_transient( $this->_base . 'transient_settings' ) ) {
 			$options['rsd_link'] = get_option( $this->_base . 'remove_rsd_link' );
+      $options['option_disable_xmlrpc'] = get_option( $this->_base . 'id_disable_xmlrpc' );
 			$options['wlwmanifest'] = get_option( $this->_base . 'remove_wlwmanifest_link' );
 			$options['feed_links'] = get_option( $this->_base . 'remove_rss_feed_links' );
 			$options['next_prev'] = get_option( $this->_base . 'remove_next_prev_links' );
@@ -285,7 +286,7 @@ class Remove_Wordpress_Overhead {
 			$options['json_api'] = get_option( $this->_base . 'disable_json_api' );
 			$options['canonical'] = get_option( $this->_base . 'remove_canonical' );
 			$options['woo_generator'] = get_option( $this->_base . 'remove_woo_generator' );
-			$options['jquery_migrate'] = get_option( $this->_base . 'remove_jquery_migrate' );
+			$options['option_jquery_migrate'] = get_option( $this->_base . 'id_jquery_migrate' );
 			$options['widgets'] = get_option( $this->_base . 'disable_wp_widgets' );
 			set_transient( $this->_base . 'transient_settings', $options );
 		}
@@ -294,6 +295,11 @@ class Remove_Wordpress_Overhead {
 		if ( isset( $options['rsd_link'] ) && 'on' == $options['rsd_link'] ) {
 			remove_action('wp_head', 'rsd_link');
 		}
+    
+    /** Disable XML-RPC  **/
+    if ( isset( $options['option_disable_xmlrpc'] ) && 'on' == $options['option_disable_xmlrpc'] ) {
+      add_action( 'wp_default_scripts', array( $this, 'disable_xmlrpc' ), 9999 );
+    }
 
 		// remove wlwmanifest.xml (needed to support windows live writer)
 		if ( isset( $options['wlwmanifest'] ) && 'on' == $options['wlwmanifest'] ) {
@@ -351,7 +357,7 @@ class Remove_Wordpress_Overhead {
 		}
 
 		// Dequeue jQuery migrate
-    if ( isset( $options['jquery_migrate'] ) && 'on' == $options['jquery_migrate'] ) {
+    if ( isset( $options['option_jquery_migrate'] ) && 'on' == $options['option_jquery_migrate'] ) {
       add_action( 'wp_default_scripts', array( $this, 'dequeue_jquery_migrate' ), 9999 );
     }
 
@@ -470,6 +476,13 @@ class Remove_Wordpress_Overhead {
 			return array();
 		}
 	}
+
+/** Disable XML-RPC  **/
+function disable_xmlrpc( $scripts ) {
+
+  add_filter('xmlrpc_enabled', '__return_false');
+
+}
   
  /** Dequeue jQuery migrate **/
 function dequeue_jquery_migrate( $scripts ) {
