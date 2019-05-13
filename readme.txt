@@ -1,6 +1,5 @@
 === Remove Wordpress Overhead ===
 Contributors: Omnisite
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8ZS4SEBD4EA7W
 Tags: wordpress, header, remove widgets, disable widgets, remove, clean, strip, version, disable, rsd link, wp generator, feed link, rss feed, shortlink, next, prev, wp generator, version number, wlwmanifest, emojicons, json api
 Requires at least: 3.9
 Tested up to: 4.6
