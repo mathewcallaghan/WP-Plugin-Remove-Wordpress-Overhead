@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Remove Wordpress Overhead
- * Version: 1.1.0
+ * Version: 1.1.1
  * Plugin URI: https://github.com/omnisite/WP-Plugin-Remove-Wordpress-Overhead
  * Description: Remove overhead from the <head> HTML and disable widgets you don't use
  * Author: Omnisite
